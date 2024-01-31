@@ -60,7 +60,7 @@ class IntGenerator : public SimObject
         IntSourcePin<IntGenerator> intSourcePin;
 
         IntGenerator(const IntGeneratorParams &p);
-        Port& getPort(const std::string &if_name, PortID idx);
+        Port& getPort(const std::string &if_name, PortID idx) override;
 
 };
 } // namespace gem5
