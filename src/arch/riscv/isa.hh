@@ -5,6 +5,7 @@
  * Copyright (c) 2016 RISC-V Foundation
  * Copyright (c) 2016 The University of Virginia
  * Copyright (c) 2020 Barkhausen Institut
+ * Copyright (c) 2024 University of Rostock
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -99,6 +100,10 @@ class ISA : public BaseISA
      */
     PrivilegeModeSet _privilegeModeSet;
 
+    /** Determine if pending interrupts are enough to
+     *  resume execution of hart
+    */
+    const bool wfiPendingResume;
   public:
     using Params = RiscvISAParams;
 
@@ -170,6 +175,8 @@ class ISA : public BaseISA
     unsigned getVecElemLenInBits() { return elen; }
 
     PrivilegeModeSet getPrivilegeModeSet() { return _privilegeModeSet; }
+
+    bool getWfiPendingResume() { return wfiPendingResume; }
 
     virtual Addr getFaultHandlerAddr(
         RegIndex idx, uint64_t cause, bool intr) const;

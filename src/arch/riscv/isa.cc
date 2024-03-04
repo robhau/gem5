@@ -3,6 +3,7 @@
  * Copyright (c) 2016 The University of Virginia
  * Copyright (c) 2020 Barkhausen Institut
  * Copyright (c) 2022 Google LLC
+ * Copyright (c) 2024 University of Rostock
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -259,7 +260,9 @@ RegClass ccRegClass(CCRegClass, CCRegClassName, 0, debug::IntRegs);
 ISA::ISA(const Params &p) : BaseISA(p),
     _rvType(p.riscv_type), checkAlignment(p.check_alignment),
     enableRvv(p.enable_rvv), vlen(p.vlen), elen(p.elen),
-    _privilegeModeSet(p.privilege_mode_set)
+    _privilegeModeSet(p.privilege_mode_set),
+    wfiPendingResume(p.wfi_pending_only)
+
 {
     _regClasses.push_back(&intRegClass);
     _regClasses.push_back(&floatRegClass);

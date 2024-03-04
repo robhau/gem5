@@ -5,6 +5,7 @@
 // Copyright (c) 2020 Barkhausen Institut
 // Copyright (c) 2021 StreamComputing Corp
 // Copyright (c) 2022 Google LLC
+// Copyright (c) 2024 University of Rostock
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -4612,16 +4613,28 @@ decode QUADRANT default Unknown::unknown() {
                                             "wfi in user mode or TW enabled",
                                             machInst);
                             }
-                            // Go to sleep only if there's no pending interrupt
-                            // at all, including masked interrupts.
+
                             auto tc = xc->tcBase();
                             auto cpu = tc->getCpuPtr();
                             auto ic = dynamic_cast<RiscvISA::Interrupts*>(
                                 cpu->getInterruptController(tc->threadId()));
                             panic_if(!ic, "Invalid Interrupt Controller.");
-                            if (ic->readIP() == 0
-                                && xc->readMiscReg(MISCREG_NMIP) == 0) {
-                                tc->quiesce();
+                            if (tc->getIsaPtr()->getWfiPendingResume()) {
+                                // Go to sleep only if there's no pending
+                                // interrupt at all, including masked
+                                // interrupts.
+                                if (ic->readIP() == 0
+                                    && xc->readMiscReg(MISCREG_NMIP) == 0) {
+                                    tc->quiesce();
+                                }
+                            } else {
+                                // Go to sleep only if there's no enabled
+                                // pending interrupt at all, including
+                                // masked interrupts.
+                                if (!(ic->readIP() & ic->readIE())
+                                    && xc->readMiscReg(MISCREG_NMIP) == 0) {
+                                    tc->quiesce();
+                                }
                             }
                         }}, IsNonSpeculative, IsQuiesce,
                             IsSerializeAfter, No_OpClass, IsSquashAfter);

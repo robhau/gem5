@@ -14,6 +14,7 @@
 # Copyright (c) 2016 RISC-V Foundation
 # Copyright (c) 2016 The University of Virginia
 # Copyright (c) 2023 The Regents of the University of California
+# Copyright (c) 2024 University of Rostock
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -116,6 +117,10 @@ class RiscvISA(BaseISA):
 
     enable_Zicbom_fs = Param.Bool(True, "Enable Zicbom extension in FS mode")
     enable_Zicboz_fs = Param.Bool(True, "Enable Zicboz extension in FS mode")
+
+    wfi_pending_only = Param.Bool(
+        True, "Pending Interrupt is enough" "to resume after wfi instruction"
+    )
 
     def get_isa_string(self):
         isa_extensions = []
