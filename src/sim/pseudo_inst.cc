@@ -14,6 +14,7 @@
  *
  * Copyright (c) 2011 Advanced Micro Devices, Inc.
  * Copyright (c) 2003-2006 The Regents of The University of Michigan
+ * Copyright (c) 2024 University of Rostock
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -192,6 +193,20 @@ m5sum(ThreadContext *tc, uint64_t a, uint64_t b, uint64_t c,
     DPRINTF(PseudoInst, "pseudo_inst::m5sum(%#x, %#x, %#x, %#x, %#x, %#x)\n",
             a, b, c, d, e, f);
     return a + b + c + d + e + f;
+}
+
+uint64_t
+printMessage(ThreadContext *tc, GuestAddr message_addr)
+{
+    // copy out message
+    std::string message;
+    TranslatingPortProxy fs_proxy(tc);
+    SETranslatingPortProxy se_proxy(tc);
+    PortProxy &virt_proxy = FullSystem ? fs_proxy : se_proxy;
+
+    virt_proxy.readString(message, message_addr.addr);
+    DPRINTF(PseudoInst, "pseudo_inst::m5print(%s)\n", message);
+    return message.length();
 }
 
 void

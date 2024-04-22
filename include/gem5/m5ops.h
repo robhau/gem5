@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2003-2006 The Regents of The University of Michigan
+ * Copyright (c) University of Rostock
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,6 +56,7 @@ void m5_checkpoint(uint64_t ns_delay, uint64_t ns_period);
 void m5_reset_stats(uint64_t ns_delay, uint64_t ns_period);
 void m5_dump_stats(uint64_t ns_delay, uint64_t ns_period);
 void m5_dump_reset_stats(uint64_t ns_delay, uint64_t ns_period);
+uint64_t m5_print_message(const char* message);
 uint64_t m5_read_file(void *buffer, uint64_t len, uint64_t offset);
 uint64_t m5_write_file(void *buffer, uint64_t len, uint64_t offset,
                        const char *filename);
